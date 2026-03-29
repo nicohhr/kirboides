@@ -9,7 +9,12 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
+    # initializing groups
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+
     # initialize player
+    player.Player.containers = (updatable, drawable)
     p1 = player.Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
     print(f"Starting Asteroids with pygame version: {pygame.version.ver}")
@@ -27,8 +32,10 @@ def main():
                 return
 
         screen.fill("black")
-        p1.update(dt)
-        p1.draw(screen)
+        updatable.update(dt)
+        for item in drawable:
+            item.draw(screen)
+
         pygame.display.flip()
 
         # Pausing game every 1/60th of a second
